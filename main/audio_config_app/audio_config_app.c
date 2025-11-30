@@ -64,7 +64,7 @@ void audio_config_app_build(audio_mgr_config_t *cfg,
     cfg->wakeup_config.wakeup_end_delay_ms = 1200;   // 说话结束延迟 1.2 秒
 
     // ========== VAD（语音活动检测）配置 ==========
-    cfg->vad_config.enabled = true;           // 启用 VAD
+    cfg->vad_config.enabled = false;           // 启用 VAD
     cfg->vad_config.vad_mode = 2;             // VAD 模式 2（中等灵敏度）
     cfg->vad_config.min_speech_ms = 200;      // 最小语音持续时间 200ms
     cfg->vad_config.min_silence_ms = 400;     // 最小静音持续时间 400ms
