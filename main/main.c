@@ -40,7 +40,7 @@ static const char *TAG = "app";
  * 行为：
  *  - 轮询 SPD2010 触摸屏，当检测到从“未按下”到“按下”的边沿事件时：
  *      1. 打断当前音频播放
- *      2. 播放一次提示音效（AUDIO_PROMPT_BEEP）
+ *      2. 播放一次青蛙叫声（/prompt_spiffs/frog.pcm）
  *      3. 播放一次青蛙 Lottie 动画（/lottie/frog.json）
  * 
  * @param arg 任务参数（未使用）
@@ -67,10 +67,8 @@ static void touch_prompt_task(void *arg)
                 audio_prompt_stop();
                 audio_manager_clear_playback_buffer();
 
-                // 2. 播放一次提示音效
-                if (audio_prompt_is_loaded(AUDIO_PROMPT_BEEP)) {
-                    audio_prompt_play(AUDIO_PROMPT_BEEP);
-                }
+                // 2. 播放一次青蛙叫声（直接播放 frog.pcm 文件）
+                audio_prompt_play_file("/prompt_spiffs/frog.pcm");
 
                 // 3. 播放青蛙 Lottie 动画
                 lottie_manager_stop_anim(-1);  // 停止当前所有动画
