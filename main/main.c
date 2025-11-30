@@ -28,6 +28,7 @@
 #include "xn_wifi_manage.h"
 #include "audio_manager.h"
 #include "audio_config_app.h"
+#include "audio_prompt.h"
 
 static const char *TAG = "app";
 
@@ -163,6 +164,17 @@ static void cpu_usage_monitor_task(void *arg)
     }
 }
 
+static void audio_prompt_demo_task(void *arg)
+{
+    (void)arg;
+    while (1) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        if (audio_prompt_is_loaded(AUDIO_PROMPT_BEEP)) {
+            audio_prompt_play(AUDIO_PROMPT_BEEP);
+        }
+    }
+}
+
 /* 应用入口：WiFi + 音频管理初始化，把录音/事件回调接入状态机。 */
 void app_main(void)
 {
@@ -185,6 +197,15 @@ void app_main(void)
     audio_manager_set_record_callback(loopback_record_cb, &s_loop_ctx);
     ESP_ERROR_CHECK(audio_manager_start());
     ESP_ERROR_CHECK(audio_manager_start_playback()); // keep playback task alive
+
+    ESP_ERROR_CHECK(audio_prompt_init());
+    xTaskCreatePinnedToCore(audio_prompt_demo_task,
+                            "prompt_demo",
+                            4096,
+                            NULL,
+                            5,
+                            NULL,
+                            0);
 
     ESP_LOGI(TAG, "loopback test ready: say wake word -> speak -> hear echo");
 
