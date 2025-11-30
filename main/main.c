@@ -2,7 +2,7 @@
  * @Author: 星年 jixingnian@gmail.com
  * @Date: 2025-11-22 13:43:50
  * @LastEditors: xingnian jixingnian@gmail.com
- * @LastEditTime: 2025-11-30 18:14:39
+ * @LastEditTime: 2025-11-30 18:29:20
  * @FilePath: \xn_esp32_audio_prompt\main\main.c
  * @Description:
  *  - 初始化 WiFi 管理模块，确保联网能力正常
@@ -28,25 +28,60 @@
 #include "audio_manager.h"
 #include "audio_config_app.h"
 #include "audio_prompt.h"
+#include "bsp_touch_spd2010.h"
+#include "xn_lottie_manager.h"
 
 /* 应用日志标签 */
 static const char *TAG = "app";
 
 /**
- * @brief 音频提示音演示任务
+ * @brief 触摸触发的音效 + Lottie 演示任务
  * 
- * 每秒播放一次蜂鸣提示音（如果已加载）
+ * 行为：
+ *  - 轮询 SPD2010 触摸屏，当检测到从“未按下”到“按下”的边沿事件时：
+ *      1. 打断当前音频播放
+ *      2. 播放一次提示音效（AUDIO_PROMPT_BEEP）
+ *      3. 播放一次青蛙 Lottie 动画（/lottie/frog.json）
  * 
  * @param arg 任务参数（未使用）
  */
-static void audio_prompt_demo_task(void *arg)
+static void touch_prompt_task(void *arg)
 {
     (void)arg;
+
+    bool last_pressed = false;
+
+    uint16_t touch_x[TOUCH_MAX_POINTS];
+    uint16_t touch_y[TOUCH_MAX_POINTS];
+    uint8_t touch_count = 0;
+
     while (1) {
-        vTaskDelay(pdMS_TO_TICKS(1000));  // 每 1 秒触发一次
-        if (audio_prompt_is_loaded(AUDIO_PROMPT_BEEP)) {
-            audio_prompt_play(AUDIO_PROMPT_BEEP);  // 播放蜂鸣音
+        bool pressed = Touch_Get_xy_Official(touch_x, touch_y, NULL, &touch_count, TOUCH_MAX_POINTS);
+
+        if (pressed && touch_count > 0) {
+            if (!last_pressed) {
+                // 检测到新的触摸按下事件
+                ESP_LOGI(TAG, "touch down: (%d, %d)", touch_x[0], touch_y[0]);
+
+                // 1. 打断当前音频播放
+                audio_prompt_stop();
+                audio_manager_clear_playback_buffer();
+
+                // 2. 播放一次提示音效
+                if (audio_prompt_is_loaded(AUDIO_PROMPT_BEEP)) {
+                    audio_prompt_play(AUDIO_PROMPT_BEEP);
+                }
+
+                // 3. 播放青蛙 Lottie 动画
+                lottie_manager_stop_anim(-1);  // 停止当前所有动画
+                lottie_manager_play("/lottie/frog.json", 256, 256);
+            }
+            last_pressed = true;
+        } else {
+            last_pressed = false;
         }
+
+        vTaskDelay(pdMS_TO_TICKS(50));  // 触摸轮询与防抖
     }
 }
 
@@ -81,15 +116,18 @@ void app_main(void)
     /* 初始化音频提示音模块（挂载 SPIFFS 并预加载音效） */
     ESP_ERROR_CHECK(audio_prompt_init());
 
-    /* 创建提示音演示任务（核心 0，优先级 5） */
-    xTaskCreatePinnedToCore(audio_prompt_demo_task,
-                            "prompt_demo",
+    /* 初始化 Lottie 管理器（包含 LVGL + SPD2010 屏幕与触摸） */
+    ESP_ERROR_CHECK(xn_lottie_manager_init(NULL));
+
+    /* 创建触摸触发音效与青蛙动画演示任务（核心 0，优先级 5） */
+    xTaskCreatePinnedToCore(touch_prompt_task,
+                            "touch_prompt",
                             4096,
                             NULL,
                             5,
                             NULL,
                             0);
 
-    /* 初始化完成，此工程作为音效组件 Demo：每秒播放一次提示音 */
-    ESP_LOGI(TAG, "audio prompt demo ready: beep every second");
+    /* 初始化完成：点击屏幕会打断旧音效并播放新音效 + 青蛙 Lottie 动画 */
+    ESP_LOGI(TAG, "touch prompt demo ready: tap screen to play beep + frog animation");
 }
