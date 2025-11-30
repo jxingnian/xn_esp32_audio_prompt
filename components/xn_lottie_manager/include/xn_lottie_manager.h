@@ -2,8 +2,8 @@
  * @Author: xingnian j_xingnian@163.com
  * @Date: 2025-08-31 23:19:25
  * @LastEditors: xingnian jixingnian@gmail.com
- * @LastEditTime: 2025-11-25 17:09:57
- * @FilePath: \xn_esp32_lottie\components\xn_lottie_manager\include\xn_lottie_manager.h
+ * @LastEditTime: 2025-11-30 19:22:52
+ * @FilePath: \xn_esp32_audio_prompt\components\xn_lottie_manager\include\xn_lottie_manager.h
  * @Description: 简单的Lottie动画管理器
  */
 
@@ -27,6 +27,7 @@ extern "C" {
 #define LOTTIE_ANIM_COOL           4
 #define LOTTIE_ANIM_LOADING        5
 #define LOTTIE_ANIM_OTA            6
+#define LOTTIE_ANIM_FROG           7
 
 // 可以继续添加更多动画类型...
 

@@ -2,7 +2,7 @@
  * @Author: 星年 jixingnian@gmail.com
  * @Date: 2025-11-22 13:43:50
  * @LastEditors: xingnian jixingnian@gmail.com
- * @LastEditTime: 2025-11-30 18:29:20
+ * @LastEditTime: 2025-11-30 19:21:42
  * @FilePath: \xn_esp32_audio_prompt\main\main.c
  * @Description:
  *  - 初始化 WiFi 管理模块，确保联网能力正常
@@ -72,7 +72,7 @@ static void touch_prompt_task(void *arg)
 
                 // 3. 播放青蛙 Lottie 动画
                 lottie_manager_stop_anim(-1);  // 停止当前所有动画
-                lottie_manager_play("/lottie/frog.json", 256, 256);
+                lottie_manager_play_anim(LOTTIE_ANIM_FROG);
             }
             last_pressed = true;
         } else {

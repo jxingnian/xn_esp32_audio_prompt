@@ -77,6 +77,7 @@
      [LOTTIE_ANIM_COOL]    = {"/lottie/emoji_cool.json",     400, 400},  // 酷
      [LOTTIE_ANIM_LOADING] = {"/lottie/loading.json",        200, 200},  // 通用加载
      [LOTTIE_ANIM_OTA]     = {"/lottie/loading.json",        400, 400},  // OTA升级动画
+     [LOTTIE_ANIM_FROG]    = {"/lottie/frog.json",           256, 256},
      // 可以继续添加更多动画配置...
  };
  
