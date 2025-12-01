@@ -2,8 +2,8 @@
  * @Author: xingnian j_xingnian@163.com
  * @Date: 2025-08-31 23:19:25
  * @LastEditors: xingnian jixingnian@gmail.com
- * @LastEditTime: 2025-11-25 17:13:18
- * @FilePath: \xn_esp32_lottie\components\xn_lottie_manager\src\xn_lottie_manager.c
+ * @LastEditTime: 2025-12-01 11:29:11
+ * @FilePath: \xn_esp32_audio_prompt\components\xn_lottie_manager\src\xn_lottie_manager.c
  * @Description: 简单的Lottie动画管理器实现
  */
 
@@ -77,6 +77,7 @@
      [LOTTIE_ANIM_COOL]    = {"/lottie/emoji_cool.json",     400, 400},  // 酷
      [LOTTIE_ANIM_LOADING] = {"/lottie/loading.json",        200, 200},  // 通用加载
      [LOTTIE_ANIM_OTA]     = {"/lottie/loading.json",        400, 400},  // OTA升级动画
+     [LOTTIE_ANIM_FROG]    = {"/lottie/frog.json",           256, 256},
      // 可以继续添加更多动画配置...
  };
  
