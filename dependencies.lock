@@ -85,34 +85,6 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 1.0.2
-  espressif/esp_lcd_touch:
-    component_hash: 779b4ba2464a3ae85681e4b860caa5fdc35801458c23f3039ee761bae7f442a4
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=4.4.2'
-    source:
-      registry_url: https://components.espressif.com
-      type: service
-    version: 1.1.2
-  espressif/esp_lcd_touch_spd2010:
-    component_hash: 2079644d54c9cae5d478b8923fb4d93721cea09814a4206dc43805cbd6b22443
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=4.4.2'
-    - name: espressif/cmake_utilities
-      registry_url: https://components.espressif.com
-      require: private
-      version: 0.*
-    - name: espressif/esp_lcd_touch
-      registry_url: https://components.espressif.com
-      require: public
-      version: ^1
-    source:
-      registry_url: https://components.espressif.com/
-      type: service
-    version: 1.0.0
   espressif/gmf_ai_audio:
     component_hash: c8d133c160708d292dd8e542e7f724889316100bac8189eab69c82e10447495a
     dependencies:
@@ -150,10 +122,9 @@ direct_dependencies:
 - espressif/button
 - espressif/esp_audio_codec
 - espressif/esp_lcd_spd2010
-- espressif/esp_lcd_touch_spd2010
 - espressif/gmf_ai_audio
 - idf
 - lvgl/lvgl
-manifest_hash: d0ff65f76cc9ce59bf6b0e7d664cad49ba97b83d6214f4d31c9f0cf3ebe864e9
+manifest_hash: baa7bf5662de4d2c7428f7b1a64f55f65c9db5e12e22b29aab4c41c9efc44548
 target: esp32s3
 version: 2.0.0

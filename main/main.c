@@ -1,8 +1,8 @@
 /*
  * @Author: 星年 jixingnian@gmail.com
  * @Date: 2025-11-22 13:43:50
- * @LastEditors: xingnian jixingnian@gmail.com
- * @LastEditTime: 2025-11-30 19:21:42
+ * @LastEditors: xingnian j_xingnian@163.com
+ * @LastEditTime: 2025-12-01 11:33:45
  * @FilePath: \xn_esp32_audio_prompt\main\main.c
  * @Description:
  *  - 初始化 WiFi 管理模块，确保联网能力正常
@@ -70,9 +70,6 @@ static void touch_prompt_task(void *arg)
                 // 2. 播放一次青蛙叫声（直接播放 frog.pcm 文件）
                 audio_prompt_play_file("/prompt_spiffs/frog.pcm");
 
-                // 3. 播放青蛙 Lottie 动画
-                lottie_manager_stop_anim(-1);  // 停止当前所有动画
-                lottie_manager_play_anim(LOTTIE_ANIM_FROG);
             }
             last_pressed = true;
         } else {
@@ -128,4 +125,8 @@ void app_main(void)
 
     /* 初始化完成：点击屏幕会打断旧音效并播放新音效 + 青蛙 Lottie 动画 */
     ESP_LOGI(TAG, "touch prompt demo ready: tap screen to play beep + frog animation");
+    
+    // 3. 播放青蛙 Lottie 动画
+    lottie_manager_stop_anim(-1);  // 停止当前所有动画
+    lottie_manager_play_anim(LOTTIE_ANIM_FROG);
 }
